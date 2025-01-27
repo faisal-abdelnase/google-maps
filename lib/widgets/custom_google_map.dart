@@ -30,12 +30,11 @@ class _CustomGoogleMapState extends State<CustomGoogleMap> {
 
       );
 
-      initMapStyle();
+      
     super.initState();
   }
 
-  
-
+  late GoogleMapController _googleMapController;
 
 
   @override
@@ -51,12 +50,21 @@ class _CustomGoogleMapState extends State<CustomGoogleMap> {
     
     mapType: MapType.normal,
 
+    onMapCreated: (controller) {
+      _googleMapController = controller;
+      initMapStyle();
+    },
+
     
     );
   }
 
-  void initMapStyle(){
+  void initMapStyle() async{
     
+    var nightMapStyle = await DefaultAssetBundle.of(context).
+    loadString('assets/maps_styles/night_map_style.json');
+
+    _googleMapController.setMapStyle(nightMapStyle);
   }
-  
+
 }
