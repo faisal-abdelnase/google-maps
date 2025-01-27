@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_maps/widgets/custom_google_map.dart';
 
 void main() {
   runApp(const GoogleMaps());
@@ -9,6 +10,10 @@ class GoogleMaps extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return const MaterialApp(
+      debugShowCheckedModeBanner: false,
+      title: 'Google Maps',
+      home: CustomGoogleMap()
+    );
   }
 }
