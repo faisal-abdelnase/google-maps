@@ -17,8 +17,8 @@ class _CustomGoogleMapState extends State<CustomGoogleMap> {
     _initialCameraPosition = const CameraPosition(
       // this is initial latitude and longitude of the camera
       target: LatLng(29.86398403496827, 31.302744328217248),
-      // this is the zoom level of the camera
 
+      // this is the zoom level of the camera
       /**
        * world view 0 -> 3
        * country view 4 -> 6
@@ -33,20 +33,57 @@ class _CustomGoogleMapState extends State<CustomGoogleMap> {
   }
 
 
+  late GoogleMapController? _googleMapController;
+
+
   @override
   Widget build(BuildContext context) {
-    return GoogleMap(
-      // this is the initial camera position
-      //this is position of the camera when the map is loaded
+    return Stack(
+      children: [GoogleMap(
+        // this is the initial camera position
+        //this is position of the camera when the map is loaded
+        // no update to initialCameraPosition
+      
+        initialCameraPosition: _initialCameraPosition,
+      
+        // this is bounds of the camera target
+        // disblay a specific area on the map
+      
+        // cameraTargetBounds: CameraTargetBounds(
+        //   LatLngBounds(
+        //     southwest: const LatLng(29.807648253116163, 31.285068517341518),
+        //     northeast: const LatLng(29.872582673055934, 31.3727441268497),
+        //     ),
+        // ),
 
-      initialCameraPosition: _initialCameraPosition,
+        // to controal the map (change the camera position....)
 
-      cameraTargetBounds: CameraTargetBounds(
-        LatLngBounds(
-          southwest: const LatLng(29.807648253116163, 31.285068517341518),
-          northeast: const LatLng(29.872582673055934, 31.3727441268497),
-          ),
-      ),
-      );
+        onMapCreated: (controller) {
+          _googleMapController = controller;
+        },
+
+        ),
+
+        Positioned(
+          bottom: 15,
+          left: 16,
+          right: 16,
+          child: ElevatedButton(
+            onPressed: (){
+              _googleMapController!.animateCamera(
+                // this is the new camera position
+                CameraUpdate.newCameraPosition(
+                  const CameraPosition(
+                    target: LatLng(29.838167159447266, 31.101601394009474),
+                    zoom: 12,
+                    ),
+                  ),
+                );
+            }, 
+            child: const Text("Change location"),
+            ),
+        ),
+        ],
+    );
   }
 }
