@@ -26,7 +26,8 @@ class _CustomGoogleMapState extends State<CustomGoogleMap> {
        * street view 13 -> 17
        * building view 18 -> 20
        */
-      zoom: 20,
+      zoom: 12,
+
       );
     super.initState();
   }
@@ -39,6 +40,13 @@ class _CustomGoogleMapState extends State<CustomGoogleMap> {
       //this is position of the camera when the map is loaded
 
       initialCameraPosition: _initialCameraPosition,
+
+      cameraTargetBounds: CameraTargetBounds(
+        LatLngBounds(
+          southwest: const LatLng(29.807648253116163, 31.285068517341518),
+          northeast: const LatLng(29.872582673055934, 31.3727441268497),
+          ),
+      ),
       );
   }
 }
