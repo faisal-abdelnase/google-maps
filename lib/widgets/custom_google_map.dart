@@ -12,6 +12,8 @@ class _CustomGoogleMapState extends State<CustomGoogleMap> {
 
   late CameraPosition _initialCameraPosition;
 
+  Set<Marker> _markers = {};
+
   @override
   void initState() {
     _initialCameraPosition = const CameraPosition(
@@ -30,9 +32,15 @@ class _CustomGoogleMapState extends State<CustomGoogleMap> {
 
       );
 
+
+      initMarkers();
+
       
     super.initState();
   }
+
+
+  
 
   late GoogleMapController _googleMapController;
 
@@ -50,6 +58,8 @@ class _CustomGoogleMapState extends State<CustomGoogleMap> {
     
     mapType: MapType.normal,
 
+    markers: _markers,
+
     onMapCreated: (controller) {
       _googleMapController = controller;
       initMapStyle();
@@ -59,12 +69,23 @@ class _CustomGoogleMapState extends State<CustomGoogleMap> {
     );
   }
 
+
+  
+
   void initMapStyle() async{
     
     var nightMapStyle = await DefaultAssetBundle.of(context).
     loadString('assets/maps_styles/night_map_style.json');
 
     _googleMapController.setMapStyle(nightMapStyle);
+  }
+  
+  void initMarkers() {
+    var myMarker = const Marker(
+      markerId: MarkerId("1"),
+      position: LatLng(29.86398403496827, 31.302744328217248),
+      );
+    _markers.add(myMarker);
   }
 
 }
