@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_maps/models/place_model.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class CustomGoogleMap extends StatefulWidget {
@@ -81,11 +82,15 @@ class _CustomGoogleMapState extends State<CustomGoogleMap> {
   }
   
   void initMarkers() {
-    var myMarker = const Marker(
-      markerId: MarkerId("1"),
-      position: LatLng(29.86398403496827, 31.302744328217248),
-      );
-    _markers.add(myMarker);
+    places.map((place) {
+      _markers.add(Marker(
+        markerId: MarkerId(place.id.toString()),
+        position: place.latLong,
+        infoWindow: InfoWindow(
+          title: place.name,
+        ),
+      ));
+    }).toSet();
   }
 
 }
