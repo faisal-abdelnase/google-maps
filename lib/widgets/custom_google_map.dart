@@ -18,6 +18,7 @@ class _CustomGoogleMapState extends State<CustomGoogleMap> {
   late CameraPosition _initialCameraPosition;
 
   Set<Marker> _markers = {};
+  Set<Polyline> _polylines = {};
 
   @override
   void initState() {
@@ -39,6 +40,8 @@ class _CustomGoogleMapState extends State<CustomGoogleMap> {
 
 
       initMarkers();
+
+      initPolyLines();
 
       
     super.initState();
@@ -64,8 +67,9 @@ class _CustomGoogleMapState extends State<CustomGoogleMap> {
     mapType: MapType.normal,
 
     markers: _markers,
+    polylines: _polylines,
 
-    zoomControlsEnabled: false,
+    // zoomControlsEnabled: false,
 
     onMapCreated: (controller) {
       _googleMapController = controller;
@@ -120,6 +124,48 @@ class _CustomGoogleMapState extends State<CustomGoogleMap> {
     setState(() {
       
     });
+  }
+
+
+
+  
+  void initPolyLines() {
+    Polyline polyline1 =  Polyline(
+      polylineId: const PolylineId('1'),
+      color: Colors.red,
+      width: 5,
+      startCap: Cap.roundCap,
+      zIndex: 10,
+      patterns: [
+        PatternItem.dash(20),
+        PatternItem.gap(10),
+      ],
+      geodesic: true,
+      points: const [
+        LatLng(29.850049845029098, 31.340459028109382),
+        LatLng(29.843587027862636, 31.342500437337772),
+        LatLng(29.84511510781167, 31.330146979891676),
+      ],
+    );
+
+
+
+    Polyline polyline2 = const Polyline(
+      polylineId: PolylineId('2'),
+      color: Colors.black,
+      width: 5,
+      startCap: Cap.roundCap,
+      zIndex: 5,
+      points: [
+        LatLng(29.854194245099112, 31.335932166539973),
+        LatLng(29.83826211060132, 31.33349873964596),
+        
+      ],
+    );
+
+    _polylines.add(polyline1);
+    _polylines.add(polyline2);
+
   }
 
 }
