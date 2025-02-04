@@ -18,7 +18,8 @@ class _CustomGoogleMapState extends State<CustomGoogleMap> {
   late CameraPosition _initialCameraPosition;
 
   Set<Marker> _markers = {};
-  Set<Polygon> _polygons = {};
+  Set<Circle> _circles = {};
+
 
   @override
   void initState() {
@@ -31,7 +32,7 @@ class _CustomGoogleMapState extends State<CustomGoogleMap> {
 
 
       initMarkers();
-      initPolygons();
+      initCircles();
 
       
     super.initState();
@@ -53,7 +54,7 @@ class _CustomGoogleMapState extends State<CustomGoogleMap> {
     
     mapType: MapType.normal,
     markers: _markers,
-    polygons: _polygons,
+    circles: _circles,
 
     // zoomControlsEnabled: false,
 
@@ -111,33 +112,27 @@ class _CustomGoogleMapState extends State<CustomGoogleMap> {
       
     });
   }
-
-
-
   
-
-
-
-
-  
-  void initPolygons() {
-    Polygon polygon1 = Polygon(
-      holes: const [[ 
-        LatLng(29.845457922458667, 31.336319168431356),
-        LatLng(29.845431601490677, 31.335226722121526),
-        LatLng(29.844931501049505, 31.337381268932916),]],
-      polygonId: const PolygonId('1'),
-      fillColor: Colors.red.withOpacity(0.5),
-      strokeColor: Colors.orange,
-      strokeWidth: 2,
-      points: const [
-        LatLng(29.850049845029098, 31.340459028109382),
-        LatLng(29.843587027862636, 31.342500437337772),
-        LatLng(29.84511510781167, 31.330146979891676),
-      ],
+  void initCircles() {
+    Circle circle = Circle(
+      circleId: CircleId('1'),
+      center: LatLng(29.848958554535614, 31.340294458987763),
+      radius: 5000,
+      fillColor: Colors.blue.withOpacity(0.3),
+      strokeWidth: 1,
+      strokeColor: Colors.red,
     );
-
-    _polygons.add(polygon1);
+    _circles.add(circle);
   }
+
+
+
+  
+
+
+
+
+  
+  
 
 }
