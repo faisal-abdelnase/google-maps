@@ -1,10 +1,7 @@
-import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:google_maps/models/place_model.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'dart:ui' as ui;
+import 'package:location/location.dart';
 
 class CustomGoogleMap extends StatefulWidget {
   const CustomGoogleMap({super.key});
@@ -16,10 +13,7 @@ class CustomGoogleMap extends StatefulWidget {
 class _CustomGoogleMapState extends State<CustomGoogleMap> {
 
   late CameraPosition _initialCameraPosition;
-
-  Set<Marker> _markers = {};
-  Set<Circle> _circles = {};
-
+  late Location location;
 
   @override
   void initState() {
@@ -30,10 +24,9 @@ class _CustomGoogleMapState extends State<CustomGoogleMap> {
 
       );
 
+    location = Location();
 
-      initMarkers();
-      initCircles();
-
+      checkAndRequestLocationService();
       
     super.initState();
   }
@@ -53,8 +46,6 @@ class _CustomGoogleMapState extends State<CustomGoogleMap> {
     initialCameraPosition: _initialCameraPosition,
     
     mapType: MapType.normal,
-    markers: _markers,
-    circles: _circles,
 
     // zoomControlsEnabled: false,
 
@@ -79,54 +70,24 @@ class _CustomGoogleMapState extends State<CustomGoogleMap> {
   }
 
 
-
-
-  Future<Uint8List> getImageFromRawData(String image, double width) async {
-    var imageData = await rootBundle.load(image);
-    var imageCodec = await ui.instantiateImageCodec(
-      imageData.buffer.asUint8List(), targetWidth: width.round());
-
-    var imageFrame = await imageCodec.getNextFrame();
-
-    var imageBytData = await imageFrame.image.toByteData(format: ui.ImageByteFormat.png);
-
-    return imageBytData!.buffer.asUint8List();
-
-  }
   
-  void initMarkers() async {
-    var customMarkerIcon = BitmapDescriptor.bytes(await getImageFromRawData('assets/images/marker.png', 50));
-    places.map((place) {
-      _markers.add(
-        Marker(
-        icon: customMarkerIcon,
-        markerId: MarkerId(place.id.toString()),
-        position: place.latLong,
-        infoWindow: InfoWindow(
-          title: place.name,
-        ),
-      ));
-    }).toSet();
+  void checkAndRequestLocationService() async {
+    var isServiceEnable = await location.serviceEnabled();
 
-    setState(() {
-      
-    });
+    if(!isServiceEnable){
+      isServiceEnable = await location.requestService();
+      if(!isServiceEnable){
+        return;
+      }
+    }
   }
+
+
+
+
   
-  void initCircles() {
-    Circle circle = Circle(
-      circleId: CircleId('1'),
-      center: LatLng(29.848958554535614, 31.340294458987763),
-      radius: 5000,
-      fillColor: Colors.blue.withOpacity(0.3),
-      strokeWidth: 1,
-      strokeColor: Colors.red,
-    );
-    _circles.add(circle);
-  }
-
-
-
+  
+  
   
 
 
@@ -136,3 +97,75 @@ class _CustomGoogleMapState extends State<CustomGoogleMap> {
   
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Future<Uint8List> getImageFromRawData(String image, double width) async {
+//     var imageData = await rootBundle.load(image);
+//     var imageCodec = await ui.instantiateImageCodec(
+//       imageData.buffer.asUint8List(), targetWidth: width.round());
+
+//     var imageFrame = await imageCodec.getNextFrame();
+
+//     var imageBytData = await imageFrame.image.toByteData(format: ui.ImageByteFormat.png);
+
+//     return imageBytData!.buffer.asUint8List();
+
+//   }
+  
+//   void initMarkers() async {
+//     var customMarkerIcon = BitmapDescriptor.bytes(await getImageFromRawData('assets/images/marker.png', 50));
+//     places.map((place) {
+//       _markers.add(
+//         Marker(
+//         icon: customMarkerIcon,
+//         markerId: MarkerId(place.id.toString()),
+//         position: place.latLong,
+//         infoWindow: InfoWindow(
+//           title: place.name,
+//         ),
+//       ));
+//     }).toSet();
+
+//     setState(() {
+      
+//     });
+//   }
+
+
+
+
+
+
+
+
+
+
+
+// void initCircles() {
+//     Circle circle = Circle(
+//       circleId: CircleId('1'),
+//       center: LatLng(29.848958554535614, 31.340294458987763),
+//       radius: 5000,
+//       fillColor: Colors.blue.withOpacity(0.3),
+//       strokeWidth: 1,
+//       strokeColor: Colors.red,
+//     );
+//     _circles.add(circle);
+//   }
+
+
