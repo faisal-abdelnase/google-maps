@@ -19,6 +19,7 @@ class _CustomGoogleMapState extends State<CustomGoogleMap> {
 
   Set<Marker> _markers = {};
   Set<Polyline> _polylines = {};
+  Set<Polygon> _polygons = {};
 
   @override
   void initState() {
@@ -42,6 +43,7 @@ class _CustomGoogleMapState extends State<CustomGoogleMap> {
       initMarkers();
 
       initPolyLines();
+      initPolygons();
 
       
     super.initState();
@@ -67,7 +69,8 @@ class _CustomGoogleMapState extends State<CustomGoogleMap> {
     mapType: MapType.normal,
 
     markers: _markers,
-    polylines: _polylines,
+    // polylines: _polylines,
+    polygons: _polygons,
 
     // zoomControlsEnabled: false,
 
@@ -166,6 +169,26 @@ class _CustomGoogleMapState extends State<CustomGoogleMap> {
     _polylines.add(polyline1);
     _polylines.add(polyline2);
 
+  }
+
+
+
+
+  
+  void initPolygons() {
+    Polygon polygon1 = Polygon(
+      polygonId: const PolygonId('1'),
+      fillColor: Colors.red.withOpacity(0.5),
+      strokeColor: Colors.orange,
+      strokeWidth: 2,
+      points: const [
+        LatLng(29.850049845029098, 31.340459028109382),
+        LatLng(29.843587027862636, 31.342500437337772),
+        LatLng(29.84511510781167, 31.330146979891676),
+      ],
+    );
+
+    _polygons.add(polygon1);
   }
 
 }
