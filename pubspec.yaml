@@ -32,10 +32,10 @@ dependencies:
   flutter:
     sdk: flutter
   google_maps_flutter: ^2.10.0
+  location: ^8.0.0
 
 dependency_overrides:
   google_maps_flutter_web: ^0.5.10
-  
 
 dev_dependencies:
   flutter_lints: ^4.0.0
