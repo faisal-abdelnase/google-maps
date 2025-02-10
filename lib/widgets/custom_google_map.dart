@@ -26,7 +26,7 @@ class _CustomGoogleMapState extends State<CustomGoogleMap> {
 
     location = Location();
 
-      checkAndRequestLocationService();
+      updateMyLocation();
 
       
     super.initState();
@@ -53,6 +53,8 @@ class _CustomGoogleMapState extends State<CustomGoogleMap> {
     onMapCreated: (controller) {
       _googleMapController = controller;
       initMapStyle();
+
+      
     },
 
     
@@ -72,7 +74,7 @@ class _CustomGoogleMapState extends State<CustomGoogleMap> {
 
 
   
-  void checkAndRequestLocationService() async {
+  Future<void> checkAndRequestLocationService() async {
     var isServiceEnable = await location.serviceEnabled();
 
     if(!isServiceEnable){
@@ -82,34 +84,56 @@ class _CustomGoogleMapState extends State<CustomGoogleMap> {
       }
     }
 
-    checkAndRequestLocationPermission();
   }
 
 
 
 
   
-  void checkAndRequestLocationPermission() async {
+  Future<bool> checkAndRequestLocationPermission() async {
     var permissionStatus = await location.hasPermission();
 
     if(permissionStatus == PermissionStatus.denied){
       permissionStatus = await location.requestPermission();
       if(permissionStatus != PermissionStatus.granted){
-        return;
+        return false;
+    }else{
+      return true;
+  }
+
+
     }
+
+    if(permissionStatus == PermissionStatus.deniedForever){
+      return false;
+    }
+
+    return true;
   }
 
-  
-  
-  
+
+
+void getLocationData(){
+  location.onLocationChanged.listen((locationData){
+    
+  });
+}
 
 
 
+  void updateMyLocation() async {
 
-  
-  
-
+    await checkAndRequestLocationService();
+    var hasPermission = await checkAndRequestLocationPermission();
+    if(hasPermission){
+      getLocationData();
+    }else{}
   }
+
+
+
+
+
 }
 
 
