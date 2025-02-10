@@ -27,6 +27,7 @@ class _CustomGoogleMapState extends State<CustomGoogleMap> {
     location = Location();
 
       checkAndRequestLocationService();
+
       
     super.initState();
   }
@@ -80,6 +81,8 @@ class _CustomGoogleMapState extends State<CustomGoogleMap> {
         return;
       }
     }
+
+    checkAndRequestLocationPermission();
   }
 
 
@@ -88,16 +91,25 @@ class _CustomGoogleMapState extends State<CustomGoogleMap> {
   
   void checkAndRequestLocationPermission() async {
     var permissionStatus = await location.hasPermission();
+
+    if(permissionStatus == PermissionStatus.denied){
+      permissionStatus = await location.requestPermission();
+      if(permissionStatus != PermissionStatus.granted){
+        return;
+    }
   }
-  
-  
-
-
-
 
   
   
+  
 
+
+
+
+  
+  
+
+  }
 }
 
 
