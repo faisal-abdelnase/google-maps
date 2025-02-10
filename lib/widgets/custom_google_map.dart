@@ -20,7 +20,7 @@ class _CustomGoogleMapState extends State<CustomGoogleMap> {
     _initialCameraPosition = const CameraPosition(
       // this is initial latitude and longitude of the camera
       target: LatLng(29.86398403496827, 31.302744328217248),
-      zoom: 12,
+      zoom: 15,
 
       );
 
@@ -35,7 +35,9 @@ class _CustomGoogleMapState extends State<CustomGoogleMap> {
 
   
 
-  late GoogleMapController _googleMapController;
+GoogleMapController? _googleMapController;
+
+Set<Marker> _markers = {};
 
 
   @override
@@ -45,6 +47,7 @@ class _CustomGoogleMapState extends State<CustomGoogleMap> {
     GoogleMap(
           
     initialCameraPosition: _initialCameraPosition,
+    markers: _markers,
     
     mapType: MapType.normal,
 
@@ -69,7 +72,7 @@ class _CustomGoogleMapState extends State<CustomGoogleMap> {
     var nightMapStyle = await DefaultAssetBundle.of(context).
     loadString('assets/maps_styles/night_map_style.json');
 
-    _googleMapController.setMapStyle(nightMapStyle);
+    _googleMapController!.setMapStyle(nightMapStyle);
   }
 
 
@@ -97,11 +100,7 @@ class _CustomGoogleMapState extends State<CustomGoogleMap> {
       permissionStatus = await location.requestPermission();
       if(permissionStatus != PermissionStatus.granted){
         return false;
-    }else{
-      return true;
-  }
-
-
+    }
     }
 
     if(permissionStatus == PermissionStatus.deniedForever){
@@ -115,7 +114,24 @@ class _CustomGoogleMapState extends State<CustomGoogleMap> {
 
 void getLocationData(){
   location.onLocationChanged.listen((locationData){
-    
+    _googleMapController?.animateCamera(
+      CameraUpdate.newLatLng(
+        LatLng(locationData.latitude!, locationData.longitude!)),
+    );
+
+    _markers.add(
+      Marker(
+        markerId: const MarkerId('my_location'),
+        position: LatLng(locationData.latitude!, locationData.longitude!),
+        infoWindow: const InfoWindow(
+          title: 'My Location',
+        ),
+      ),
+    );
+
+    setState(() {
+      
+    });
   });
 }
 
