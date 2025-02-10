@@ -86,7 +86,9 @@ class _CustomGoogleMapState extends State<CustomGoogleMap> {
 
 
   
-  
+  void checkAndRequestLocationPermission() async {
+    var permissionStatus = await location.hasPermission();
+  }
   
   
 
