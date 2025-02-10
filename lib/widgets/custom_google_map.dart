@@ -113,6 +113,10 @@ Set<Marker> _markers = {};
 
 
 void getLocationData(){
+  
+  location.changeSettings(
+    distanceFilter: 2,
+  );
   location.onLocationChanged.listen((locationData){
     _googleMapController?.animateCamera(
       CameraUpdate.newLatLng(
